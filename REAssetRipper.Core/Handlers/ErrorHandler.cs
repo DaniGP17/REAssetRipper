@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace REAssetRipper.Core
+namespace REAssetRipper.Core.Handlers
 {
     public static class ErrorHandler
     {

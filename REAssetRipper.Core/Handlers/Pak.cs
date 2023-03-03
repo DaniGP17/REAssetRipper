@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace REAssetRipper.Core.FilesHandlers
+namespace REAssetRipper.Core.Handlers
 {
     public class Pak
     {
@@ -40,8 +40,9 @@ namespace REAssetRipper.Core.FilesHandlers
 
                     Log.InsertNewLog("Version number is valid");
 
-                    Structures.PakAssets[] assets = new Structures.PakAssets[count];
-                    for(int i = 0; i < count; i++)
+                    PakAssets = new Dictionary<uint, Structures.PakAssets>();
+
+                    for (int i = 0; i < count; i++)
                     {
                         Structures.PakAssets asset = new Structures.PakAssets();
                         asset.LowerCaseHash = br.ReadUInt32();
@@ -51,8 +52,8 @@ namespace REAssetRipper.Core.FilesHandlers
                         asset.DecompressedSize = br.ReadInt64();
                         asset.Flags = br.ReadBytes(8);
                         asset.Checksum = br.ReadInt64();
-                        
-                        assets[i] = asset;
+
+                        PakAssets[asset.LowerCaseHash] = asset;
                     }
                 }
             }
