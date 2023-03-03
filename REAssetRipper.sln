@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REAssetRipper.Core", "REAssetRipper.Core\REAssetRipper.Core.csproj", "{3E4FEB54-9BD2-464D-A910-E6E99E27FC9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REAssetRipper", "..\..\..\Documents\GitHub\REAssetRipper\REAssetRipper\REAssetRipper.csproj", "{36BA959F-B7C3-465D-894B-5082BFC1601E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REAssetRipper.Testing", "REAssetRipper.Testing\REAssetRipper.Testing.csproj", "{CA08F2B3-4441-4484-9F1C-833AD914D4BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E4FEB54-9BD2-464D-A910-E6E99E27FC9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E4FEB54-9BD2-464D-A910-E6E99E27FC9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E4FEB54-9BD2-464D-A910-E6E99E27FC9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E4FEB54-9BD2-464D-A910-E6E99E27FC9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36BA959F-B7C3-465D-894B-5082BFC1601E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36BA959F-B7C3-465D-894B-5082BFC1601E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36BA959F-B7C3-465D-894B-5082BFC1601E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36BA959F-B7C3-465D-894B-5082BFC1601E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA08F2B3-4441-4484-9F1C-833AD914D4BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA08F2B3-4441-4484-9F1C-833AD914D4BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA08F2B3-4441-4484-9F1C-833AD914D4BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA08F2B3-4441-4484-9F1C-833AD914D4BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF381EF6-270B-4FE6-A5F6-5205D14E64AD}
+	EndGlobalSection
+EndGlobal
