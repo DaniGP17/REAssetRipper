@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
 namespace REAssetRipper.Core.Handlers
 {
 	public static class List
@@ -6,7 +9,9 @@ namespace REAssetRipper.Core.Handlers
         public static Dictionary<string, string> hashList = new Dictionary<string, string>();
 		public static void ReadList()
 		{
-            string filePath = "/Users/danielgallegopinilla/Documents/GitHub/REAssetRipper/REAssetRipper.Core/HashList/re7.list";
+            string fileName = "re7.list";
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string filePath = Path.Combine(executablePath, "HashList", fileName);
             StreamReader reader = new StreamReader(filePath);
 
             string line;

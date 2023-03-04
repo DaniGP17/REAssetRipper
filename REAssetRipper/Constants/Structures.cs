@@ -45,7 +45,7 @@ namespace REAssetRipper.Core.Constants
             public int Version;
             public ushort Width;
             public ushort Height;
-            public ushort Depth;
+            public ushort NonStaticMeshFlag;
             public byte MipMapCount;
             public byte Unknown1;
             public ScratchImage.DXGIFormat Format;

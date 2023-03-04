@@ -1,14 +1,11 @@
 ﻿using REAssetRipper.Core.Constants;
 using REAssetRipper.Core.Logs;
-using System;
 using System.IO;
 using System.IO.Compression;
-using System.Reflection.PortableExecutable;
-using System.Runtime.InteropServices;
-using zlib;
-using Zstandard;
 using Zstandard.Net;
 using PhilLibX.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace REAssetRipper.Core.Handlers
 {
