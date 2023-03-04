@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using PhilLibX.Imaging;
 
 namespace REAssetRipper.Core.Constants
 {
@@ -35,6 +36,29 @@ namespace REAssetRipper.Core.Constants
             public byte[] Flags;
 
             public long Checksum { get; set; }
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct TextureHeaderRE7
+        {
+            public int Magic;
+            public int Version;
+            public ushort Width;
+            public ushort Height;
+            public ushort Depth;
+            public byte MipMapCount;
+            public byte Unknown1;
+            public ScratchImage.DXGIFormat Format;
+            public uint Unknown2;
+            public long Padding;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct MipMapRE7
+        {
+            public long Offset;
+            public int Unkown;
+            public int Size;
         }
     }
 }

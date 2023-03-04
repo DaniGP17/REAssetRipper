@@ -32,7 +32,7 @@ namespace REAssetRipper.Core.Handlers
             {
                 return path;
             }
-            return hash;
+            return "Undefined-" + hash;
         }
 	}
 }

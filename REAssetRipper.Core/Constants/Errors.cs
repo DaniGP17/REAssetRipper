@@ -11,7 +11,9 @@ namespace REAssetRipper.Core.Constants
         public enum Types
         {
             InvalidMagicNumber,
-            InvalidVersionNumber
+            InvalidVersionNumber,
+            InvalidEntryCompression,
+            CantFindTextureFormat
         }
     }
 }
