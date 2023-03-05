@@ -1,0 +1,34 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Script File
+//
+//      File: RE_Engine_Motlist_fixRE8FacialAnims.1sc
+//   Authors: alphaZomega
+//   Version: 1.0
+//   Purpose: Apply this script to a RE8 facial animation motlist before importing w/ Revilmax using "Additive Animations" onto the matching meshfile
+//  Category: RE_Engine_Motlist
+//   History: 
+//------------------------------------------------
+int i, j, k;
+while (exists(MOT[i])){
+    j=0;
+    MOT[i].MOT_HEADER.uknFloat[1] = MOT[i].MOT_HEADER.frameCount;
+    MOT[i].MOT_HEADER.uknShort = 0;
+    while(exists(MOT[i].BONE_HEADERS.BONE_HEADER[j])) {
+        MOT[i].BONE_HEADERS.BONE_HEADER[j].Index = j;
+        MOT[i].BONE_HEADERS.BONE_HEADER[j].padding = 0;
+        j++;
+    }
+    j=0;
+    if (exists(MOT[i].BONE_HEADERS.boneHdrCount)) {
+        while(exists(MOT[i].BONE_CLIP_HEADERS.bnClipHdr[j])) {
+            for (k=0; k<MOT[i].BONE_HEADERS.boneHdrCount; k++) {
+                if (MOT[i].BONE_CLIP_HEADERS.bnClipHdr[j].boneHash == MOT[i].BONE_HEADERS.BONE_HEADER[k].boneHash) {
+                    MOT[i].BONE_CLIP_HEADERS.bnClipHdr[j].boneIndex = MOT[i].BONE_HEADERS.BONE_HEADER[k].Index;
+                    break;
+                }
+            }
+            j++;
+        }
+    }
+    i++;
+}

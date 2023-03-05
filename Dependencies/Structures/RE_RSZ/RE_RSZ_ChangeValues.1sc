@@ -1,0 +1,302 @@
+//------------------------------------------------
+//--- 010 Editor v9.0.2 Script File
+//
+//      File: RE_RSZ_ChangeValues.1sc
+//   Authors: alphaZomega
+//   Version: 0.362
+//   Purpose: Script to modify input RE Engine RSZ variables within a range
+//  Category: RE Engine
+//   History: September 4, 2022
+//------------------------------------------------
+
+
+//Options:
+local int inputValue = 1; //set this to 0 and you can set your own list of commands to the bottom of this script, to run it multiple times automatically
+
+
+void runScripts() 
+{
+    //Set up automatic scripting here:
+    //You can set "objectNameToFind" to only change ones that are referenced with specific Object names. Unset it after using the runScript() for it.
+    //Various examples below. 
+    runScript("_Offset", "app.ropeway.camera.PlayerCameraParam[8]", "", "*1 0.85 1");
+   
+    //runScript("Cone", "", "", "*0.45");
+    //runScript("ShadowBias", "", "", "0.00065");
+    //runScript("BlackBodyRadiation", "", "", "1");
+    //runScript("Intensity", "", "", "*0.23");
+    //runScript("Radius", "", "", "*1.25");
+    //runScript("ShadowFlag", "", "", "3");
+    //runScript("UniformShadowEnable", "", "", "1");
+    //runScript("IsAttackPermit", "app.enemy.CheckStateBase", "", "0");
+    //runScript("_LimitedNearDistance", "", "", "0.1");
+    //runScript("_LimitedUpperFigureAngle", "", "", "1");
+    //runScript("_LimitedLowerFigureAngle", "", "", "1");
+
+    //runScript("HasDefaultItemData", "", "", "0");
+    //runScript("_isUniqueItemBox", "", "", "1");
+    //runScript("ObjectIndex", "", "", "+1154");
+    //runScript("UpdateSelf", "", "", "0");
+    //runScript("DrawSelf", "", "", "0");
+    //runScript("v0", "via.render.Mesh", "", "0");
+    //runScript("STRUCT_AIMapEdgeCreate__HasValue", "", "", "0");
+    //runScript("STRUCT_AIMapEdgeCreate__Value", "", "", "0");
+    //runScript("v0", "app.ropeway.gimmick.option.ChangeMapSpaceInfoSettings", "True", "0");
+    //runScript("UpdateSelf", "", "", "0");
+    //runScript("Command", "app.ropeway.gimmick.option.ChangeMapSpaceInfoSettings.Param.Execute", "2", "99");
+    //runScript("Command", "app.ropeway.gimmick.option.ChangeMapSpaceInfoSettings.Param.Execute", "1", "2");
+    //runScript("Command", "app.ropeway.gimmick.option.ChangeMapSpaceInfoSettings.Param.Execute", "99", "1");
+    //runScript("v0", "app.ropeway.OccludeeController", "True", "0");
+
+    /*//runScript("AroundEnable", "", "", "1");
+    runScript("GroupName_Role", "", "12", "3");
+    //runScript("GroupName_Role", "", "13", "2");
+    //runScript("GroupName_Role", "", "14", "4");
+    runScript("ActionEndOnDamage", "", "", "1");
+    runScript("GUID", "app.ropeway.enemy.em0000.Em0000Context", "", "+1");
+    runScript("ActionStartFlag", "app.ropeway.enemy.em0000.param.ContextParameter", "00000000-0000-0000-0000-000000000000", "4a9f3411-a83b-234f-ad91-1ee6d9147fe8");
+    //runScript("ActionEndFlag", "app.ropeway.enemy.em0000.param.ContextParameter", "", "00000000-0000-0000-0000-000000000000");
+    runScript("_Valid", "", "", "1");
+    runScript("_Radius", "", "", "0.5");
+    runScript("_ShapeType", "", "0", "1");
+    runScript("LoiteringEnable", "", "", "1");
+    runScript("Default", "app.ropeway.SimpleSphereArea", "[0, 0, 0]", "+0");
+    runScript("OverwriteAreaMoveNum", "", "False", "1");
+    runScript("AreaMoveEnableNum", "", "", "10");
+    runScript("_TerritoryTurnBackPosition", "", "", "0 0 0");
+    runScript("AssignMapArea", "", "", "0");
+    runScript("AreaRestrictEnable", "", "", "0");
+    runScript("_TerritoryType", "", "", "0");
+    runScript("_TerritoryTurnBackPointType", "", "", "0");
+    runScript("_TerritoryForceFind", "", "", "0");
+    runScript("LimitedAreaSet", "", "", "0");
+    runScript("RestrictAreaList", "", "", "0");*/
+}
+
+
+local int lv, r, v, a, g, t;
+local int multiply, divide, add, random, not;
+string objectNameToFind = "";
+string fieldToChange;
+string instanceToChange;
+string searchValue;
+wstring changeValue;
+string lastTransform;
+
+string MakeMultiValue(RSZVariable &r, string oldStr, string newStr) {
+    string result = newStr;
+    uint valueSz = 4;
+    if (exists(r.data[7]))
+        valueSz = 8;
+    float values[valueSz];
+    
+    if (r.fieldName == "Default")
+        result = lastTransform;
+    else if (find((wstring)newStr, " ") != -1)  {
+        if (valueSz == 4)
+            SScanf( newStr, "%g %g %g %g", values[0], values[1], values[2], values[3] );
+        else if (valueSz == 8)
+            SScanf( newStr, "%g %g %g %g %g %g %g %g", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7] );
+        for (g=0; g<valueSz; g++) {
+            if (random && values[g] > 0) 
+                values[g] = (0.01) * (float)Random(values[g]);
+            if (exists(r.data[g]))
+                if (multiply) {
+                    values[g] = r.data[g] * values[g];
+                } else if (divide && values[g] != 0) {
+                    values[g] = r.data[g] / values[g];
+                } else if (add) {
+                    values[g] = r.data[g] + values[g];
+                }
+        }
+        if (valueSz == 4)
+            SPrintf(result, "%g %g %g %g", values[0], values[1], values[2], values[3]);
+        else if (valueSz == 8)
+            SPrintf(result, "%g %g %g %g %g %g %g %g", values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7]);
+    }
+    return result;
+}
+
+void ChangeValue(RSZVariable &r) 
+{
+    local string oldValue, newValue;
+    if (exists(r.ObjectIndex) && fieldToChange == "ObjectIndex") { //&& detectedObject(startof(r))
+        if ((searchValue == "" || r.ObjectIndex == Atoi(searchValue)) && ReadUInt(startof(r)) > 3 ) { //&& oldValue != ""
+            newValue = changeValue;
+            if (add)
+                SPrintf(newValue, "%i", r.ObjectIndex + Atoi(changeValue));
+            Printf("Changing %s ObjectIndex at %u from %g to %s \n", fieldToChange, r.varStart, r.ObjectIndex, newValue);
+            r.ObjectIndex = Atoi(newValue);
+        }
+    } else if (searchValue == "" || ((!not && ReadRSZVariable(r) == searchValue) || (not && ReadRSZVariable(r) != searchValue))) {
+        oldValue = ReadRSZVariable(r);
+        if (oldValue[0] == 91) {
+            newValue = changeValue;
+        } else if (multiply) {
+            SPrintf(newValue, "%g", Atof(oldValue) * Atof(changeValue));
+        } else if (divide) {
+            if (Atof(oldValue) == 0) 
+                { v++; return; }
+            SPrintf(newValue, "%g", Atof(oldValue) / Atof(changeValue));
+        } else if (add) {
+            if (find(Lower(ReadRSZVariableName(r)), "guid")!=-1) {
+                newValue = ReadRSZVariable(r);
+                newValue[sizeof(newValue)-2] += Atoi(changeValue);
+            } else
+                SPrintf(newValue, "%g", Atof(oldValue) + Atof(changeValue));
+        } else if (random) {
+            SPrintf(newValue, "%g", Random(Atof(changeValue)));
+        } else {
+            newValue = changeValue;
+        }
+
+        newValue = MakeMultiValue(r, oldValue, newValue);
+
+         
+        Printf("Changing %s value at %u from %s to %s \n", r.fieldName, r.varStart, oldValue, newValue);
+        
+        //Printf("2 Changing %s value at %u from %s to %s \n", fieldToChange, startof(r.varStart), oldValue, newValue);
+        WriteRSZVariable(r, (wstring)newValue);
+    }
+}
+
+int testObjectName (RSZInstance &r, RSZVariable &v, string nameToTest) {
+    if (nameToTest == v.fieldName  && exists(v.ObjectIndex)) {
+        return (startof(RSZFile[lv].Data.RawData.RSZ[v.ObjectIndex]) == startof(r));
+    } else return false;
+}
+
+int isParentObjectNamed(RSZInstance &r, string nameToTest) {
+    local int a, b, c, d;
+    while (exists(RSZFile[lv].Data.RawData.RSZ[a])) {
+        b=0;
+        while (exists(RSZFile[lv].Data.RawData.RSZ[a].var[b])) {
+            if (RSZFile[lv].Data.RawData.RSZ[a].var[b].isList == 1) {
+                c=0;
+                while (exists(RSZFile[lv].Data.RawData.RSZ[a].var[b].var[c])) {
+                    if (testObjectName(r, RSZFile[lv].Data.RawData.RSZ[a].var[b].var[c], nameToTest))
+                        return true;
+                    c++;
+                }
+            } else {
+                if (testObjectName(r, RSZFile[lv].Data.RawData.RSZ[a].var[b], nameToTest) == true)
+                    return true;
+            }
+            b++;
+        }
+        a++;
+    }
+    return false;
+}
+
+int checkForObjectIndex(RSZVariable &v) {
+    if (fieldToChange == "ObjectIndex" && v.fieldType != UserData_tid)
+        return (exists(v.ObjectIndex) || (exists(v.var) && exists(v.var.ObjectIndex)));
+    return false;
+}
+
+void runScript(string fldToChange, string instToChange, string srchValue, wstring chngValue) {
+    fieldToChange = fldToChange;
+    instanceToChange = instToChange;
+    searchValue = srchValue;
+    changeValue = chngValue;
+    
+    if (findS(fieldToChange, " ") != -1) 
+        fieldToChange = StrDel(fieldToChange, 0, findS(fieldToChange, " ") + 1);
+    if (findS(fieldToChange, "\\[") != -1) 
+        fieldToChange = StrDel(fieldToChange, findS(fieldToChange, "\\["), sizeof(fieldToChange) - findS(fieldToChange, "\\["));
+    if (findS(instanceToChange, "\\[") != -1) 
+        instanceToChange = StrDel(instanceToChange, findS(instanceToChange, "\\["), sizeof(instanceToChange) - findS(instanceToChange, "\\["));
+
+    if (searchValue[0] == 0x21) { //!
+        not = TRUE;
+        searchValue = SubStr(searchValue, 1, sizeof(searchValue)-1);
+    }
+    
+    if (changeValue[0] == 0x2A)
+        multiply = TRUE;
+    else if (changeValue[0] == 0x2F)
+        divide = TRUE;
+    else if (changeValue[0] == 0x2B)
+        add = TRUE;
+    else if (changeValue[0] == 0x7E) //~
+        random = TRUE;
+    if (multiply || add || divide || random)  {
+        changeValue = SubStr(changeValue, 1, sizeof(changeValue)-1);
+    }
+    
+    instanceToChange = Lower((wstring)instanceToChange);
+    for (lv=0; lv<level; lv++) {
+        r = 0;
+        while (exists(RSZFile[lv].Data.RawData.RSZ[r])) {
+            v = 0; 
+            if (RSZFile[lv].Data.RawData.RSZ[r].name == "via.Transform")
+                lastTransform = ReadRSZInstance(RSZFile[lv].Data.RawData.RSZ[r]);
+            
+            while (exists(RSZFile[lv].Data.RawData.RSZ[r].var[v])) {
+                if ( (GetSelSize() < 64 || (startof(RSZFile[lv].Data.RawData.RSZ[r].var[v]) >= GetSelStart() 
+                && startof(RSZFile[lv].Data.RawData.RSZ[r].var[v]) + sizeof(RSZFile[lv].Data.RawData.RSZ[r].var[v]) <= GetSelStart() + GetSelSize())) ) {
+                    
+                    if (checkForObjectIndex(RSZFile[lv].Data.RawData.RSZ[r].var[v]) || ((RSZFile[lv].Data.RawData.RSZ[r].var[v].fieldName == fieldToChange  
+                    && (instanceToChange == "" || instanceToChange == Lower((wstring)RSZFile[lv].Data.RawData.RSZ[r].name)
+                    || instanceToChange == Lower((wstring)RSZFile[lv].Data.RawData.RSZ[r].title)))) ) {
+
+                    //|| (fieldToChange == "ObjectIndex" && (exists(RSZFile[lv].Data.RawData.RSZ[r].var[v].ObjectIndex) 
+					//|| (exists(RSZFile[lv].Data.RawData.RSZ[r].var[v].var) && exists(RSZFile[lv].Data.RawData.RSZ[r].var[v].var.ObjectIndex)))
+                    //&& RSZFile[lv].Data.RawData.RSZ[r].var[v].fieldType != UserData_tid)
+                    //|| find(Lower((wstring)RSZFile[lv].Data.RawData.RSZ[r].name), (wstring)instanceToChange) != -1
+                    //|| find(Lower((wstring)RSZFile[lv].Data.RawData.RSZ[r].title), (wstring)searchValue)     != -1 )    ) {
+                        if (objectNameToFind != "" && RSZFile[lv].Data.RawData.RSZ[r].var[v].fieldName == fieldToChange 
+                        && isParentObjectNamed(RSZFile[lv].Data.RawData.RSZ[r], objectNameToFind) == FALSE) {
+                            v++;
+                            continue;  
+                        }
+                        a = 0;
+                        if (!exists(RSZFile[lv].Data.RawData.RSZ[r].var[v].Count)) {
+                            ChangeValue(RSZFile[lv].Data.RawData.RSZ[r].var[v]);
+                        } else while (exists(RSZFile[lv].Data.RawData.RSZ[r].var[v].var[a])) {
+                            ChangeValue(RSZFile[lv].Data.RawData.RSZ[r].var[v].var[a]);
+                            a++;
+                        }
+                    }
+                }
+                v++; 
+            }
+            r++;
+        }
+        //if (GetSelSize() && startof(RSZFile[lv]) >= GetSelStart() && startof(RSZFile[lv])+sizeof(RSZFile[lv]) > GetSelStart()+GetSelSize())
+        //    break;
+    }
+
+
+    multiply = FALSE;
+    divide = FALSE;
+    add = FALSE;
+    random = FALSE;
+}
+
+
+//start
+if (inputValue) {
+    fieldToChange = InputString("Input field name to find", "Input the Name of the field you want to change", "");
+    if (fieldToChange == "")
+        return;
+    if (GetSelSize() && GetSelSize() > 64)
+        Printf("Will change %s variables within range: [%u to %u]\n\n", fieldToChange, GetSelStart(), GetSelStart() + GetSelSize());
+    instanceToChange = Lower(InputString("Input instance name to find", "Or leave blank to change all instances with that field.\n\nStart with a `*` to specify by Object name", ""));
+    if (instanceToChange[0] == 42) {
+        instanceToChange = SubStr(instanceToChange, 1, sizeof(instanceToChange)-1);
+        objectNameToFind = InputString("Input object name", "Input the Name of the Object that contains your instance", "");
+    }
+    string msg; SPrintf(msg, "Or leave blank to change all %s values", fieldToChange);
+    searchValue = InputString("Input old value to find", msg, "");
+    
+    changeValue = InputString("Input New Value", "Example:\n5 = Change to 5\n*1 = Multiply by 1\n\\2 = Divide by 2\n+1.4 = Add 1.4\n+-3 = Subtract 3", "*1");
+    Printf("ChangeValue: %s\n", changeValue);
+    
+    runScript(fieldToChange, instanceToChange, searchValue, changeValue);
+} else { 
+    runScripts();
+}
+WriteUByte(0, ReadUByte(0)); //allows Undo
+//FileSave();
