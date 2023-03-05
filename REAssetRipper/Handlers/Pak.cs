@@ -48,20 +48,6 @@ namespace REAssetRipper.Core.Handlers
             var entries = br.ReadArray<Structures.PakAssets>(count);
             foreach (var entry in entries)
                 PakAssets[entry.LowerCaseHash] = entry;
-
-            /*for (int i = 0; i < count; i++)
-            {
-                Structures.PakAssets asset = new Structures.PakAssets();
-                asset.LowerCaseHash = br.ReadUInt32();
-                asset.UpperCaseHash = br.ReadUInt32();
-                asset.Offset = br.ReadInt64();
-                asset.CompressedSize = br.ReadInt64();
-                asset.DecompressedSize = br.ReadInt64();
-                asset.Flags = br.ReadBytes(8);
-                asset.Checksum = br.ReadInt64();
-
-                PakAssets[asset.LowerCaseHash] = asset;
-            }*/
         }
 
         public byte[] LoadAsset(Structures.PakAssets asset)

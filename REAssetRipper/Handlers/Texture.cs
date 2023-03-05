@@ -50,7 +50,7 @@ namespace REAssetRipper.Core.Handlers
                 MiscFlags = ScratchImage.TexMiscFlags.NONE,
                 MiscFlags2 = ScratchImage.TexMiscFlags2.NONE,
                 Dimension = ScratchImage.TexDimension.TEXTURE2D,
-                MipLevels = 2,
+                MipLevels = 1,
                 Format = header.Format
             }, reader.ReadBytes(mip.Size));
         }

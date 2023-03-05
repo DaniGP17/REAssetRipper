@@ -11,6 +11,8 @@ using System.Linq;
 using Microsoft.SqlServer.Server;
 using System.Drawing;
 using static REAssetRipper.Core.Constants.Structures;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace REAssetRipper.Testing
 {
@@ -23,32 +25,21 @@ namespace REAssetRipper.Testing
             List<Asset> results = new List<Asset>(pak.PakAssets.Count);
             REAssetRipper.Core.Handlers.List.ReadList();
             int asd = 0;
-            string lastName = "";
+            int lastid = 0;
 
             foreach (var entry in pak.PakAssets)
             {
-                string path = List.GetNameFromHash(entry.Value.LowerCaseHash.ToString());
-                AssetTypes.types type = AssetClasificator.GetType(path);
-
-                //Console.WriteLine(type + "   " + path);
-                if (AssetTypes.types.Texture == type && path.Contains("props"))
+                string path = List.GetNameFromAsset(entry.Value);
+                if (AssetClasificator.GetType(path) == AssetTypes.types.Texture && path.Contains(".mdf."))
                 {
-                    Console.WriteLine(path);
-                    int ultimoSeparador = path.LastIndexOf('/');
-                    string fileName = path.Substring(ultimoSeparador + 1);
-                    if (fileName != lastName)
-                    {
-                        asd++;
-                        //ExtractAsset(entry.Value, "\\\\Mac\\Home\\Desktop\\" + fileName);
-                        File.WriteAllBytes("\\\\Mac\\Home\\Desktop\\" + fileName, pak.LoadAsset(entry.Value));
-                        lastName = fileName;
-                    }
-                }
-                if (asd > 5)
+                    ExtractAsset(entry.Value, "\\\\Mac\\Home\\Desktop\\test.mdf.8");
+                    //File.WriteAllBytes("\\\\Mac\\Home\\Desktop\\sm2080_cardkey01a.tex.8", pak.LoadAsset(entry.Value));
+                    Debug.WriteLine(entry.Value.DecompressedSize + "  " + entry.Value.CompressedSize);
                     break;
+                }
             }
-            Console.WriteLine("Finished" + asd.ToString());
         }
+
 
         private static void ExtractAsset(PakAssets asset, string path)
         {

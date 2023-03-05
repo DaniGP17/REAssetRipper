@@ -1,4 +1,5 @@
-﻿using System;
+﻿using REAssetRipper.Core.Constants;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -39,6 +40,20 @@ namespace REAssetRipper.Core.Handlers
             }
             return "Undefined-" + hash;
         }
-	}
+
+        public static string GetNameFromAsset(Structures.PakAssets asset)
+        {
+            if (hashList.Count == 0)
+            {
+                ReadList();
+            }
+            string path;
+            if (hashList.TryGetValue(asset.LowerCaseHash.ToString(), out path))
+            {
+                return path;
+            }
+            return "Undefined-" + asset.LowerCaseHash.ToString();
+        }
+    }
 }
 

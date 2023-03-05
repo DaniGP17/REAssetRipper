@@ -191,7 +191,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MurmurHash3.cpp" />
     <ClCompile Include="REAssetRipper.Hashing.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MurmurHash3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

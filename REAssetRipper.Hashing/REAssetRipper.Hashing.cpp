@@ -2,10 +2,46 @@
 //
 
 #include <iostream>
+#include "murmurhash3.h"
+
+unsigned int ConvertFilePathToMurmurHash(char* filePath, bool lower = 1, bool changeCase = 1, bool keepNullTerminator = 0)
+{
+	//We'll need a UTF-16 variant of the filepath for this
+	unsigned int wideLength = (unsigned int)((strlen(filePath) + 1) * 2);
+	char* wideString = new char[wideLength];
+	memset(wideString, 0, wideLength);
+	unsigned int oldPos = 0, newPos = 0;
+	while (1)
+	{
+		if (filePath[oldPos] == '\\') filePath[oldPos] = '/';
+		if (changeCase)
+		{
+			if (lower) wideString[newPos] = tolower(filePath[oldPos]);
+			else wideString[newPos] = toupper(filePath[oldPos]);
+		}
+		else
+			wideString[newPos] = filePath[oldPos];
+		wideString[newPos + 1] = 0;
+		if (filePath[oldPos] == 0)
+			break;
+		newPos += 2;
+		oldPos++;
+	}
+	unsigned int murmurHash = 0;
+	if (keepNullTerminator == 0)
+		MurmurHash3_x86_32(wideString, wideLength - 2, -1, &murmurHash);
+	else
+		MurmurHash3_x86_32(wideString, wideLength, -1, &murmurHash);
+	delete[]wideString;
+	return murmurHash;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	//lower 4194362085
+	//upper 843311338
+	char *hashName = ReturnFilenameFromHashList(4194362085, 843311338);
+    std::cout << hashName;
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
