@@ -12,7 +12,7 @@ namespace REAssetRipper.Core.Handlers
 		{
             string fileName = "re7.list";
             string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string filePath = Path.Combine(executablePath, "HashList", fileName);
+            string filePath = Path.Combine(executablePath, "Hashing",  fileName);
             StreamReader reader = new StreamReader(filePath);
 
             string line;

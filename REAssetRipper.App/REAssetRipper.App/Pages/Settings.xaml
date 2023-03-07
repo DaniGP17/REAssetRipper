@@ -1,0 +1,95 @@
+﻿<Page
+    x:Class="REAssetRipper.App.Pages.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:REAssetRipper.App.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- la primera fila se ajustará automáticamente para acomodar el contenido -->
+            <RowDefinition Height="*"/>
+            <!-- la segunda fila se extenderá para llenar el espacio restante -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="30 40 0 0" Grid.Row="0" Grid.Column="0">
+            <StackPanel>
+                <StackPanel HorizontalAlignment="Left">
+                    <TextBlock TextAlignment="Left" FontWeight="Bold" FontSize="20" Text="Multithreading:"/>
+                    <TextBlock FontSize="14" TextWrapping="Wrap" Text="Allow the program to use more threads to make the process faster (this requires high consume)." Margin="0,12,0,0" MaxWidth="500"/>
+                    <ToggleSwitch Margin="0 5 0 0" IsOn="True" AutomationProperties.Name="simple ToggleSwitch"/>
+                </StackPanel>
+
+                <StackPanel Margin="0 30 0 0" HorizontalAlignment="Left" >
+                    <TextBlock TextAlignment="Left" FontWeight="Bold" FontSize="20" Text="Mesh Extension:"/>
+                    <TextBlock FontSize="14" TextWrapping="Wrap" Text="The extension that will have all the models exported by this tool." Margin="0,12,0,0" MaxWidth="500"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <RadioButton GroupName="meshExt" Content="OBJ"/>
+                        <RadioButton GroupName="meshExt" IsChecked="true" Content="FBX"/>
+                        <RadioButton GroupName="meshExt" Content="SEMODEL"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="0 30 0 0" HorizontalAlignment="Left" >
+                    <TextBlock TextAlignment="Left" FontWeight="Bold" FontSize="20" Text="Texture Extension:"/>
+                    <TextBlock FontSize="14" TextWrapping="Wrap" Text="The extension that will have all the textures exported by this tool." Margin="0,12,0,0" MaxWidth="500"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <RadioButton GroupName="textExt" IsChecked="true" Content="DDS"/>
+                        <RadioButton GroupName="textExt" Content="PNG"/>
+                        <RadioButton GroupName="textExt" Content="JPG"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="0 30 0 0" HorizontalAlignment="Left" >
+                    <TextBlock TextAlignment="Left" FontWeight="Bold" FontSize="20" Text="Animation Extension:"/>
+                    <TextBlock FontSize="14" TextWrapping="Wrap" Text="The extension that will have all the animations exported by this tool." Margin="0,12,0,0" MaxWidth="500"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <RadioButton GroupName="animExt" Content="SEANIM"/>
+                        <RadioButton GroupName="animExt" IsChecked="true" Content="FBX"/>
+                        <RadioButton GroupName="animExt" Content="OBJ"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="0 30 0 0" HorizontalAlignment="Left" >
+                    <TextBlock TextAlignment="Left" FontWeight="Bold" FontSize="20" Text="Sounds Extension:"/>
+                    <TextBlock FontSize="14" TextWrapping="Wrap" Text="The extension that will have all the sounds exported by this tool." Margin="0,12,0,0" MaxWidth="500"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <RadioButton GroupName="soundExt" IsChecked="true" Content="WAV"/>
+                        <RadioButton GroupName="soundExt" Content="MP3"/>
+                        <RadioButton GroupName="soundExt" Content="OGG"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Margin="30 40 0 0" Grid.Row="0" Grid.Column="1">
+            <StackPanel>
+                <StackPanel Margin="0 0 0 0" HorizontalAlignment="Left" >
+                    <TextBlock TextAlignment="Left" FontWeight="Bold" FontSize="20" Text="Scene Extension:"/>
+                    <TextBlock FontSize="14" TextWrapping="Wrap" Text="The extension that will have all the scenes exported by this tool." Margin="0,12,0,0" MaxWidth="500"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <RadioButton GroupName="sceneExt" IsChecked="true" Content="XML"/>
+                        <RadioButton GroupName="sceneExt" Content="JSON"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="0 30 0 0" HorizontalAlignment="Left" >
+                    <TextBlock TextAlignment="Left" FontWeight="Bold" FontSize="20" Text="Prefab Extension:"/>
+                    <TextBlock FontSize="14" TextWrapping="Wrap" Text="The extension that will have all the prefabs exported by this tool." Margin="0,12,0,0" MaxWidth="500"/>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                        <RadioButton GroupName="prefabExt" IsChecked="true" Content="XML"/>
+                        <RadioButton GroupName="prefabExt" Content="JSON"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</Page>

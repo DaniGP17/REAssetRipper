@@ -1,122 +1,89 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using REAssetRipper.Core.Handlers;
+using REAssetRipper.Core.Constants;
+using System;
+using System.Text.RegularExpressions;
+using REAssetRipper.Core.Logs;
 using System.IO;
+using PhilLibX.IO;
+using PhilLibX.Imaging;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.SqlServer.Server;
+using System.Drawing;
+using static REAssetRipper.Core.Constants.Structures;
+using System.Diagnostics;
+using System.Xml.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
-using System.Threading.Tasks;
-using PhilLibX;
-using REAssetRipper.Core.Handlers;
 
-namespace REAssetRipper.Testing2
+namespace REAssetRipper.Testing
 {
-    public static class MurMurHash3
+    public class Program
     {
-        //Change to suit your needs
-        const uint seed = 144;
-
-        public static int Hash(Stream stream)
+        private static REAssetRipper.Core.Handlers.Pak pak;
+        static void Main(string[] args)
         {
-            const uint c1 = 0xcc9e2d51;
-            const uint c2 = 0x1b873593;
+            pak = new REAssetRipper.Core.Handlers.Pak("D:\\Games\\Resident Evil VII Biohazard\\re_chunk_000.pak");
+            List<Asset> results = new List<Asset>(pak.PakAssets.Count);
+            REAssetRipper.Core.Handlers.List.ReadList();
 
-            uint h1 = seed;
-            uint k1 = 0;
-            uint streamLength = 0;
-
-            using (BinaryReader reader = new BinaryReader(stream))
+            foreach (var entry in pak.PakAssets)
             {
-                byte[] chunk = reader.ReadBytes(4);
-                while (chunk.Length > 0)
+                string path = List.GetNameFromAsset(entry.Value);
+                if (AssetClasificator.GetType(path) == AssetTypes.types.AudioBnk)
                 {
-                    streamLength += (uint)chunk.Length;
-                    switch (chunk.Length)
+                    Console.WriteLine(path);
+                    byte[] bnkBytes = pak.LoadAsset(entry.Value);
+                    BNKHeaderRE7 bnkHeader;
+                    MemoryStream memoryStream = new MemoryStream(bnkBytes);
+                    BinaryReader binaryReader = new BinaryReader(memoryStream);
+                    bnkHeader = binaryReader.ReadStruct<BNKHeaderRE7>();
+                    byte[] magicBytes = BitConverter.GetBytes(bnkHeader.Magic);
+                    int magicInt = BitConverter.ToInt32(magicBytes, 0);
+                    string magicStr = new string(new[] { (char)(magicInt & 0xff), (char)((magicInt >> 8) & 0xff), (char)((magicInt >> 16) & 0xff), (char)((magicInt >> 24) & 0xff) });
+                    if (magicStr != "BKHD")
+                        return;
+
+                    binaryReader.BaseStream.Seek(bnkHeader.TableOffset, SeekOrigin.Begin);
+                    BNKIndexEntryRE7[] sounds = new BNKIndexEntryRE7[bnkHeader.TableCount];
+                    for (int i = 0; i < bnkHeader.TableCount; i++)
                     {
-                        case 4:
-                            /* Get four bytes from the input into an uint */
-                            k1 = (uint)
-                               (chunk[0]
-                              | chunk[1] << 8
-                              | chunk[2] << 16
-                              | chunk[3] << 24);
+                        sounds[i].Offset = binaryReader.ReadInt32();
+                        sounds[i].Size = binaryReader.ReadInt32();
+                        sounds[i].Flags = binaryReader.ReadInt32();
 
-                            /* bitmagic hash */
-                            k1 *= c1;
-                            k1 = rotl32(k1, 15);
-                            k1 *= c2;
-
-                            h1 ^= k1;
-                            h1 = rotl32(h1, 13);
-                            h1 = h1 * 5 + 0xe6546b64;
-                            break;
-                        case 3:
-                            k1 = (uint)
-                               (chunk[0]
-                              | chunk[1] << 8
-                              | chunk[2] << 16);
-                            k1 *= c1;
-                            k1 = rotl32(k1, 15);
-                            k1 *= c2;
-                            h1 ^= k1;
-                            break;
-                        case 2:
-                            k1 = (uint)
-                               (chunk[0]
-                              | chunk[1] << 8);
-                            k1 *= c1;
-                            k1 = rotl32(k1, 15);
-                            k1 *= c2;
-                            h1 ^= k1;
-                            break;
-                        case 1:
-                            k1 = (uint)(chunk[0]);
-                            k1 *= c1;
-                            k1 = rotl32(k1, 15);
-                            k1 *= c2;
-                            h1 ^= k1;
-                            break;
-
+                        int nameLength = binaryReader.ReadInt32();
+                        sounds[i].Name = Encoding.ASCII.GetString(binaryReader.ReadBytes(nameLength));
                     }
-                    chunk = reader.ReadBytes(4);
+
+                    // Imprimir nombres de archivo de sonido
+                    Console.WriteLine("Archivos de sonido encontrados en el archivo .bnk:");
+                    foreach (BNKIndexEntryRE7 sound in sounds)
+                    {
+                        Console.WriteLine(sound.Name);
+                    }
+
+                    // Cerrar archivo y liberar recursos
+                    binaryReader.Close();
+                    break;
                 }
             }
 
-            // finalization, magic chants to wrap it all up
-            h1 ^= streamLength;
-            h1 = fmix(h1);
+        }
 
-            unchecked //ignore overflow
+
+        private static void ExtractAsset(PakAssets asset, string path)
+        {
+            AssetTypes.types type = AssetClasificator.GetType(path);
+            switch (type)
             {
-                return (int)h1;
-            }
-        }
+                case AssetTypes.types.Texture:
+                    var image = Texture.Convert(pak.LoadAsset(asset));
+                    if (REAssetRipper.Core.Helpers.Settings.textureExport != TextureTypes.exportTypes.dds)
+                        image.ConvertImage(ScratchImage.DXGIFormat.R8G8B8A8UNORM);
 
-        private static uint rotl32(uint x, byte r)
-        {
-            return (x << r) | (x >> (32 - r));
-        }
-
-        private static uint fmix(uint h)
-        {
-            h ^= h >> 16;
-            h *= 0x85ebca6b;
-            h ^= h >> 13;
-            h *= 0xc2b2ae35;
-            h ^= h >> 16;
-            return h;
-        }
-    }
-
-    internal class Program
-    {
-        static void Main()
-        {
-            Encoding encoding = new UTF8Encoding();
-            byte[] input = encoding.GetBytes("natives/x64/aaa/ambassadortrial_tu/animation/player/pl0000/motfsm/pl0000_interact_lookmole_v2.motfsm.17");
-            using (MemoryStream stream = new MemoryStream(input))
-            {
-                int hash = MurMurHash3.Hash(stream);
-                Debug.WriteLine(hash);
+                    image.Save(path + "." + REAssetRipper.Core.Helpers.Settings.textureExport.ToString());
+                    break;
             }
         }
     }

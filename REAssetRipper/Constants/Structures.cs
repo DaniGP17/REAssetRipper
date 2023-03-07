@@ -23,18 +23,12 @@ namespace REAssetRipper.Core.Constants
         public struct PakAssets
         {
             public uint LowerCaseHash { get; set; }
-
             public uint UpperCaseHash { get; set; }
-
             public long Offset { get; set; }
-
             public long CompressedSize { get; set; }
-
             public long DecompressedSize { get; set; }
-
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x8)]
             public byte[] Flags;
-
             public long Checksum { get; set; }
         }
 
@@ -59,6 +53,26 @@ namespace REAssetRipper.Core.Constants
             public long Offset;
             public int Unkown;
             public int Size;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct BNKHeaderRE7
+        {
+            public int Magic;
+            public int Version;
+            public int HeaderSize;
+            public int DataSize;
+            public int TableOffset;
+            public int TableCount;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct BNKIndexEntryRE7
+        {
+            public int Offset;
+            public int Size;
+            public int Flags;
+            public string Name;
         }
     }
 }
