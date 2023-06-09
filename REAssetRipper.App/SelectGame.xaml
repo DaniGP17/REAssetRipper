@@ -1,0 +1,101 @@
+﻿<Window x:Class="REAssetRipper.App.SelectGame"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:REAssetRipper.App"
+        mc:Ignorable="d"
+        Title="SelectGame" Height="600" Width="470">
+    <Grid>
+        <Label Content="RE Asset Ripper" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
+
+        <StackPanel VerticalAlignment="Center">
+            <Button HorizontalContentAlignment="Left" Margin="10 0 10 0" Background="#ffff" BorderBrush="AliceBlue" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" Margin="20 0 0 0">
+                    <Image Source="/assets/images/image1.png" Width="130" Height="80" Margin="0,0,0,0"/>
+                    <StackPanel>
+                        <TextBlock Text="Grand Theft Auto V" FontSize="20" Margin="0, 10, 10, 10"/>
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="20,0,0,0"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button>Windows</Button>
+                            <Button>Xbox 360</Button>
+                            <Button>PS3</Button>
+                            <Button>PS4</Button>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalContentAlignment="Left" Margin="10 0 10 0" Background="#ffff" BorderBrush="AliceBlue" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" Margin="20 0 0 0">
+                    <Image Source="/assets/images/image1.png" Width="130" Height="80" Margin="0,0,0,0"/>
+                    <StackPanel>
+                        <TextBlock Text="Grand Theft Auto V" FontSize="20" Margin="0, 10, 10, 10"/>
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="20,0,0,0"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button>Windows</Button>
+                            <Button>Xbox 360</Button>
+                            <Button>PS3</Button>
+                            <Button>PS4</Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalContentAlignment="Left" Margin="10 0 10 0" Background="#ffff" BorderBrush="AliceBlue" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" Margin="20 0 0 0">
+                    <Image Source="/assets/images/image1.png" Width="130" Height="80" Margin="0,0,0,0"/>
+                    <StackPanel>
+                        <TextBlock Text="Grand Theft Auto V" FontSize="20" Margin="0, 10, 10, 10"/>
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="20,0,0,0"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button>Windows</Button>
+                            <Button>Xbox 360</Button>
+                            <Button>PS3</Button>
+                            <Button>PS4</Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </Button>
+
+            <Button HorizontalContentAlignment="Left" Margin="10 0 10 0" Background="#ffff" BorderBrush="AliceBlue" BorderThickness="2">
+                <StackPanel Orientation="Horizontal" Margin="20 0 0 0">
+                    <Image Source="/assets/images/image1.png" Width="130" Height="80" Margin="0,0,0,0"/>
+                    <StackPanel>
+                        <TextBlock Text="Grand Theft Auto V" FontSize="20" Margin="0, 10, 10, 10"/>
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel.Resources>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Margin" Value="20,0,0,0"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button>Windows</Button>
+                            <Button>Xbox 360</Button>
+                            <Button>PS3</Button>
+                            <Button>PS4</Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <TextBlock Margin="0,0,0,20" VerticalAlignment="Bottom" HorizontalAlignment="Center" Text="Version 1.0" FontSize="16" />
+        <Button Content="Cerrar" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20"/>
+    </Grid>
+</Window>
